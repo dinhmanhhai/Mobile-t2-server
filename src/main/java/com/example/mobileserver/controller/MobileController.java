@@ -38,5 +38,4 @@ public class MobileController {
           , HttpStatus.OK);
     }
   }
-
 }
