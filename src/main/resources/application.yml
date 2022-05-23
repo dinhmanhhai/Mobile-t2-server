@@ -1,0 +1,14 @@
+#CONFIG PORT
+server:
+  port: 9090
+  max-http-header-size: 100000000
+
+# SPRING CONFIG
+spring:
+
+  #  DATASOURCE MARIADB
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://192.168.20.33:3306/haidm?createDatabaseIfNotExist=true&autoReconnect=true&UseUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: Tpc@123456
