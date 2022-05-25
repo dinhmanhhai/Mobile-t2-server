@@ -1,4 +1,4 @@
-package com.example.mobileserver.enities;
+package com.example.mobileserver.entities;
 
 
 import javax.persistence.Column;
