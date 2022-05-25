@@ -12,3 +12,17 @@ spring:
     url: jdbc:mariadb://192.168.20.33:3306/haidm?createDatabaseIfNotExist=true&autoReconnect=true&UseUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
     password: Tpc@123456
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+  # REDIS
+  redis:
+    host: 192.168.20.33
+    port: 6379
+    database: 0
+    password: admin123

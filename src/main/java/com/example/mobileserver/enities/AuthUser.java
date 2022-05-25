@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 
-@Data
 @Entity
 @Table(name = "base_user_info")
 public class AuthUser {

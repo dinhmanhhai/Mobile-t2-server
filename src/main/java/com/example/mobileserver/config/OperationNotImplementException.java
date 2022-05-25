@@ -1,6 +1,7 @@
 package com.example.mobileserver.config;
 
 public class OperationNotImplementException extends Exception {
+
   protected String messageCode;
 
   public String getMessageCode() {

@@ -1,6 +1,7 @@
 package com.example.mobileserver.config;
 
 public class GetMethodResponse<T> {
+
   private Boolean status;
   private String message;
   private Integer httpCode;
@@ -60,11 +61,12 @@ public class GetMethodResponse<T> {
     } else if (!(o instanceof GetMethodResponse)) {
       return false;
     } else {
-      GetMethodResponse<?> other = (GetMethodResponse)o;
+      GetMethodResponse<?> other = (GetMethodResponse) o;
       if (!other.canEqual(this)) {
         return false;
       } else {
-        label71: {
+        label71:
+        {
           Object this$status = this.getStatus();
           Object other$status = other.getStatus();
           if (this$status == null) {
@@ -88,7 +90,8 @@ public class GetMethodResponse<T> {
           return false;
         }
 
-        label57: {
+        label57:
+        {
           Object this$httpCode = this.getHttpCode();
           Object other$httpCode = other.getHttpCode();
           if (this$httpCode == null) {
@@ -149,10 +152,13 @@ public class GetMethodResponse<T> {
 
   public String toString() {
     Boolean var10000 = this.getStatus();
-    return "GetMethodResponse(status=" + var10000 + ", message=" + this.getMessage() + ", httpCode=" + this.getHttpCode() + ", data=" + this.getData() + ", errorCode=" + this.getErrorCode() + ")";
+    return "GetMethodResponse(status=" + var10000 + ", message=" + this.getMessage() + ", httpCode="
+        + this.getHttpCode() + ", data=" + this.getData() + ", errorCode=" + this.getErrorCode()
+        + ")";
   }
 
-  public GetMethodResponse(final Boolean status, final String message, final Integer httpCode, final T data, final String errorCode) {
+  public GetMethodResponse(final Boolean status, final String message, final Integer httpCode,
+      final T data, final String errorCode) {
     this.status = status;
     this.message = message;
     this.httpCode = httpCode;
@@ -161,6 +167,7 @@ public class GetMethodResponse<T> {
   }
 
   public static class GetMethodResponseBuilder<T> {
+
     private Boolean status;
     private String message;
     private Integer httpCode;
@@ -196,11 +203,14 @@ public class GetMethodResponse<T> {
     }
 
     public GetMethodResponse<T> build() {
-      return new GetMethodResponse(this.status, this.message, this.httpCode, this.data, this.errorCode);
+      return new GetMethodResponse(this.status, this.message, this.httpCode, this.data,
+          this.errorCode);
     }
 
     public String toString() {
-      return "GetMethodResponse.GetMethodResponseBuilder(status=" + this.status + ", message=" + this.message + ", httpCode=" + this.httpCode + ", data=" + this.data + ", errorCode=" + this.errorCode + ")";
+      return "GetMethodResponse.GetMethodResponseBuilder(status=" + this.status + ", message="
+          + this.message + ", httpCode=" + this.httpCode + ", data=" + this.data + ", errorCode="
+          + this.errorCode + ")";
     }
   }
 }

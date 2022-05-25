@@ -4,11 +4,13 @@ import com.example.mobileserver.config.BaseMethodResponse;
 import com.example.mobileserver.config.Constants;
 import com.example.mobileserver.config.GetMethodResponse;
 import com.example.mobileserver.config.OperationNotImplementException;
+import com.example.mobileserver.dto.SignInDto;
+import com.example.mobileserver.dto.SignInResponse;
+import com.example.mobileserver.services.impl.MobileServicesImpl;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,14 +21,19 @@ public class MobileController {
   private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory
       .getLogger(MobileController.class);
 
-  @GetMapping(path = "/signup")
-  public ResponseEntity<?> signupCTV(HttpServletRequest request) {
+  final MobileServicesImpl mobileServices;
+
+  public MobileController(MobileServicesImpl mobileServices) {
+    this.mobileServices = mobileServices;
+  }
+
+  @PostMapping(path = "/auth/sign-in")
+  public ResponseEntity<?> signupCTV(HttpServletRequest request,
+      @RequestBody @Valid SignInDto dto) {
     try {
-//      Integer userId = authGuard.getUserId(request);
-//      dto.setUserId(userId);
-      ResponseCallApiHRTech response = v3MService.createUserCTV(dto);
+      SignInResponse signInResponse = mobileServices.signIn(dto);
       return new ResponseEntity<>(
-          GetMethodResponse.builder().status(true).data(true)
+          GetMethodResponse.builder().status(true).data(signInResponse)
               .message(Constants.SUCCESS_MSG)
               .errorCode(HttpStatus.OK.name().toLowerCase()).httpCode(HttpStatus.OK.value()).build()
           , HttpStatus.OK);
