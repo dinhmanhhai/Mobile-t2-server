@@ -1,6 +1,7 @@
 package com.example.mobileserver.config;
 
 public class BaseMethodResponse {
+
   private Boolean status;
   private String message;
   private Integer httpCode;
@@ -51,11 +52,12 @@ public class BaseMethodResponse {
     } else if (!(o instanceof BaseMethodResponse)) {
       return false;
     } else {
-      BaseMethodResponse other = (BaseMethodResponse)o;
+      BaseMethodResponse other = (BaseMethodResponse) o;
       if (!other.canEqual(this)) {
         return false;
       } else {
-        label59: {
+        label59:
+        {
           Object this$status = this.getStatus();
           Object other$status = other.getStatus();
           if (this$status == null) {
@@ -124,10 +126,12 @@ public class BaseMethodResponse {
 
   public String toString() {
     Boolean var10000 = this.getStatus();
-    return "BaseMethodResponse(status=" + var10000 + ", message=" + this.getMessage() + ", httpCode=" + this.getHttpCode() + ", errorCode=" + this.getErrorCode() + ")";
+    return "BaseMethodResponse(status=" + var10000 + ", message=" + this.getMessage()
+        + ", httpCode=" + this.getHttpCode() + ", errorCode=" + this.getErrorCode() + ")";
   }
 
-  public BaseMethodResponse(final Boolean status, final String message, final Integer httpCode, final String errorCode) {
+  public BaseMethodResponse(final Boolean status, final String message, final Integer httpCode,
+      final String errorCode) {
     this.status = status;
     this.message = message;
     this.httpCode = httpCode;
@@ -135,6 +139,7 @@ public class BaseMethodResponse {
   }
 
   public static class BaseMethodResponseBuilder {
+
     private Boolean status;
     private String message;
     private Integer httpCode;
@@ -168,7 +173,8 @@ public class BaseMethodResponse {
     }
 
     public String toString() {
-      return "BaseMethodResponse.BaseMethodResponseBuilder(status=" + this.status + ", message=" + this.message + ", httpCode=" + this.httpCode + ", errorCode=" + this.errorCode + ")";
+      return "BaseMethodResponse.BaseMethodResponseBuilder(status=" + this.status + ", message="
+          + this.message + ", httpCode=" + this.httpCode + ", errorCode=" + this.errorCode + ")";
     }
   }
 }

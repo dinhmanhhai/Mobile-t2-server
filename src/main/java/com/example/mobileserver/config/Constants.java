@@ -1,6 +1,7 @@
 package com.example.mobileserver.config;
 
 public interface Constants {
+
   String AUTHORIZATION = "Authorization";
   String TOKEN = "token";
   String ACCESS_TOKEN = "access-token";
