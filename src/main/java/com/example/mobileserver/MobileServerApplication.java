@@ -1,5 +1,6 @@
 package com.example.mobileserver;
 
+import com.example.mobileserver.controller.MobileController;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @Slf4j
 @EnableJpaAuditing
-@ComponentScan(basePackages = {"com.example.mobileserver.services.*"})
+//@ComponentScan(basePackageClasses = MobileController.class, MobileServicesImpl.class)
 @ConfigurationPropertiesScan
 @EntityScan(basePackages = {"com.example.mobileserver.entities"})
 @EnableJpaRepositories(basePackages = {"com.example.mobileserver.repositories"})

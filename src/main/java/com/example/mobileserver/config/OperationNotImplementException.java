@@ -4,6 +4,10 @@ public class OperationNotImplementException extends Exception {
 
   protected String messageCode;
 
+  public OperationNotImplementException(String message) {
+    super(message);
+  }
+
   public String getMessageCode() {
     return this.messageCode;
   }
