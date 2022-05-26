@@ -29,7 +29,7 @@ public class MobileController {
 
   @PostMapping(path = "/auth/sign-in")
   public ResponseEntity<?> signupCTV(HttpServletRequest request,
-      @RequestBody @Valid SignInDto dto) {
+      @RequestBody SignInDto dto) {
     try {
       SignInResponse signInResponse = mobileServices.signIn(dto);
       return new ResponseEntity<>(
