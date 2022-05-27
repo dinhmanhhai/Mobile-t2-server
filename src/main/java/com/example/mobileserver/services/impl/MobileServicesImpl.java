@@ -3,6 +3,7 @@ package com.example.mobileserver.services.impl;
 import com.example.mobileserver.config.AuthServiceMessageCode;
 import com.example.mobileserver.config.OperationNotImplementException;
 import com.example.mobileserver.dto.NoteDto;
+import com.example.mobileserver.dto.PostNoteDto;
 import com.example.mobileserver.dto.SignInDto;
 import com.example.mobileserver.dto.SignInResponse;
 import com.example.mobileserver.entities.AuthUser;
@@ -11,7 +12,9 @@ import com.example.mobileserver.repositories.AuthUserRepositories;
 import com.example.mobileserver.repositories.NoteRepositories;
 import com.example.mobileserver.services.iface.MobileServices;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
@@ -109,6 +112,35 @@ public class MobileServicesImpl implements MobileServices {
     note.setTitle(dto.getTitle());
     note.setCompleted(false);
     noteRepositories.save(note);
+    return null;
+  }
+
+  @Override
+  public List<NoteUser> getNotes(String token) throws OperationNotImplementException {
+    extendRedisKey(token, getRedisKeyValue(token));
+    String v = getRedisKeyValue(token);
+    List<NoteUser> list = new ArrayList<>();
+    list = noteRepositories.findByUserId(v);
+    return list;
+  }
+
+  @Override
+  public Integer editNote(Integer id, PostNoteDto dto,
+      String token) throws OperationNotImplementException {
+    extendRedisKey(token, getRedisKeyValue(token));
+    NoteUser note = noteRepositories.findOneById(id);
+    Date date = new Date();
+
+    note.setContent(dto.getContent());
+    note.setTitle(dto.getTitle());
+    note.setModifyTime(DD_MM_YYYY.format(date));
+    noteRepositories.save(note);
+    return note.getId();
+  }
+
+  @Override
+  public List<NoteUser> deleteNote(Integer id, String token) throws OperationNotImplementException {
+    extendRedisKey(token, getRedisKeyValue(token));
     return null;
   }
 
