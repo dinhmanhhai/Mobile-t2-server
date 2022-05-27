@@ -31,7 +31,7 @@ public class MobileController {
   public ResponseEntity<?> signupCTV(HttpServletRequest request,
       @RequestBody SignInDto dto) {
     try {
-      SignInResponse signInResponse = mobileServices.signIn(dto);
+      SignInResponse signInResponse = mobileServices.signIn(dto, request.getHeader("token"));
       return new ResponseEntity<>(
           GetMethodResponse.builder().status(true).data(signInResponse)
               .message(Constants.SUCCESS_MSG)

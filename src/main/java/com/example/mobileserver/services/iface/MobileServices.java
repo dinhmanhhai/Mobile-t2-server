@@ -5,5 +5,5 @@ import com.example.mobileserver.dto.SignInDto;
 import com.example.mobileserver.dto.SignInResponse;
 
 public interface MobileServices {
-  SignInResponse signIn(SignInDto dto) throws OperationNotImplementException;
+  SignInResponse signIn(SignInDto dto, String token) throws OperationNotImplementException;
 }
