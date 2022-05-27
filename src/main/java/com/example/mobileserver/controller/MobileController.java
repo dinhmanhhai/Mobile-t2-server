@@ -4,6 +4,7 @@ import com.example.mobileserver.config.BaseMethodResponse;
 import com.example.mobileserver.config.Constants;
 import com.example.mobileserver.config.GetMethodResponse;
 import com.example.mobileserver.config.OperationNotImplementException;
+import com.example.mobileserver.dto.NoteDto;
 import com.example.mobileserver.dto.SignInDto;
 import com.example.mobileserver.dto.SignInResponse;
 import com.example.mobileserver.services.impl.MobileServicesImpl;
@@ -32,6 +33,32 @@ public class MobileController {
       @RequestBody SignInDto dto) {
     try {
       SignInResponse signInResponse = mobileServices.signIn(dto, request.getHeader("token"));
+      return new ResponseEntity<>(
+          GetMethodResponse.builder().status(true).data(signInResponse)
+              .message(Constants.SUCCESS_MSG)
+              .errorCode(HttpStatus.OK.name().toLowerCase()).httpCode(HttpStatus.OK.value()).build()
+          , HttpStatus.OK);
+    } catch (OperationNotImplementException e) {
+      logger.error(e.getMessage());
+      return new ResponseEntity<>(
+          BaseMethodResponse.builder().status(false).message(e.getMessage())
+              .errorCode(e.getMessageCode()).httpCode(HttpStatus.BAD_REQUEST.value()).build()
+          , HttpStatus.OK);
+    } catch (Exception e) {
+      logger.error(e.getMessage());
+      return new ResponseEntity<>(
+          BaseMethodResponse.builder().status(false).message(Constants.INTERNAL_SERVER_ERROR)
+              .errorCode(HttpStatus.INTERNAL_SERVER_ERROR.name().toLowerCase())
+              .httpCode(HttpStatus.INTERNAL_SERVER_ERROR.value()).build()
+          , HttpStatus.OK);
+    }
+  }
+
+  @PostMapping(path = "/post-note")
+  public ResponseEntity<?> postNote(HttpServletRequest request,
+      @RequestBody NoteDto dto) {
+    try {
+      SignInResponse signInResponse = mobileServices.postNote(dto, request.getHeader("token"));
       return new ResponseEntity<>(
           GetMethodResponse.builder().status(true).data(signInResponse)
               .message(Constants.SUCCESS_MSG)

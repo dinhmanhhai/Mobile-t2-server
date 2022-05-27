@@ -2,11 +2,16 @@ package com.example.mobileserver.services.impl;
 
 import com.example.mobileserver.config.AuthServiceMessageCode;
 import com.example.mobileserver.config.OperationNotImplementException;
+import com.example.mobileserver.dto.NoteDto;
 import com.example.mobileserver.dto.SignInDto;
 import com.example.mobileserver.dto.SignInResponse;
 import com.example.mobileserver.entities.AuthUser;
+import com.example.mobileserver.entities.NoteUser;
 import com.example.mobileserver.repositories.AuthUserRepositories;
+import com.example.mobileserver.repositories.NoteRepositories;
 import com.example.mobileserver.services.iface.MobileServices;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
@@ -16,15 +21,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class MobileServicesImpl implements MobileServices {
 
-
   final AuthUserRepositories authUserRepositories;
+
+  final NoteRepositories noteRepositories;
 
   private final RedisTemplate redisTemplate;
 
+  SimpleDateFormat DD_MM_YYYY = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
   public MobileServicesImpl(
       AuthUserRepositories authUserRepositories,
+      NoteRepositories noteRepositories,
       RedisTemplate redisTemplate) {
     this.authUserRepositories = authUserRepositories;
+    this.noteRepositories = noteRepositories;
     this.redisTemplate = redisTemplate;
   }
 
@@ -43,12 +53,10 @@ public class MobileServicesImpl implements MobileServices {
   @Override
   public SignInResponse signIn(SignInDto dto, String token) throws OperationNotImplementException {
     SignInResponse response = new SignInResponse();
+    UUID uuid = UUID.randomUUID();
 
-    // exten token
-    String existTokenValue = getRedisKeyValue(token);
-    if(existTokenValue != null){
-      extendRedisKey(token, dto.getUserId());
-    }
+    // extend token
+    extendRedisKey(String.valueOf(uuid), dto.getUserId());
 
     // validate dto
     AuthUser user = this.validateUser(dto);
@@ -62,18 +70,46 @@ public class MobileServicesImpl implements MobileServices {
       tmp.setUserId(dto.getUserId());
       authUserRepositories.save(tmp);
 
-      //
-//      System.out.println(
-//          "Value of key: " + redisTemplate.opsForValue().get(String.valueOf(user.getUserId())));
       response.setId(tmp.getId());
-      response.setToken(String.valueOf(token));
+      response.setToken(String.valueOf(uuid));
       return response;
     }
     authUserRepositories.save(user);
     response.setId(user.getId());
-    response.setToken(String.valueOf(token));
-    redisTemplate.opsForValue().set(user.getUserId(), String.valueOf(token));
+    response.setToken(String.valueOf(uuid));
     return response;
+  }
+
+  @Override
+  public SignInResponse postNote(NoteDto dto, String token) throws OperationNotImplementException {
+    String v = getRedisKeyValue(token);
+
+    if(v == null){
+      throw new OperationNotImplementException("user not found" +
+          AuthServiceMessageCode.USER_CREATE_FAIL);
+    }
+    AuthUser tmp = authUserRepositories.findById(v);
+
+    if(tmp == null){
+      throw new OperationNotImplementException("user not found" +
+          AuthServiceMessageCode.USER_CREATE_FAIL);
+    }
+
+    // extend token
+    extendRedisKey(token, tmp.getUserId());
+
+    Date date = new Date();
+
+    NoteUser note = new NoteUser();
+    note.setCreateTime(DD_MM_YYYY.format(date));
+    note.setModifyTime(DD_MM_YYYY.format(date));
+    note.setUserId(tmp.getUserId());
+    note.setIsDeleted(false);
+    note.setContent(dto.getContent());
+    note.setTitle(dto.getTitle());
+    note.setCompleted(false);
+    noteRepositories.save(note);
+    return null;
   }
 
   private AuthUser validateUser(SignInDto dto) throws OperationNotImplementException {
