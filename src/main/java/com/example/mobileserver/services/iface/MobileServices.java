@@ -17,5 +17,7 @@ public interface MobileServices {
 
   Integer editNote(Integer id, PostNoteDto dto, String token) throws OperationNotImplementException;
 
-  List<NoteUser> deleteNote(Integer id, String token) throws OperationNotImplementException;
+  String deleteNote(Integer id, String token) throws OperationNotImplementException;
+
+  SignInResponse getUserInfo(String token) throws OperationNotImplementException;
 }

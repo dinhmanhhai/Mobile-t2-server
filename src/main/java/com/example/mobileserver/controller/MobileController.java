@@ -59,6 +59,32 @@ public class MobileController {
     }
   }
 
+  @GetMapping(path = "/auth/user")
+  public ResponseEntity<?> getUserInfo(HttpServletRequest request,
+      @RequestBody SignInDto dto) {
+    try {
+      SignInResponse signInResponse = mobileServices.getUserInfo(request.getHeader("token"));
+      return new ResponseEntity<>(
+          GetMethodResponse.builder().status(true).data(signInResponse)
+              .message(Constants.SUCCESS_MSG)
+              .errorCode(HttpStatus.OK.name().toLowerCase()).httpCode(HttpStatus.OK.value()).build()
+          , HttpStatus.OK);
+    } catch (OperationNotImplementException e) {
+      logger.error(e.getMessage());
+      return new ResponseEntity<>(
+          BaseMethodResponse.builder().status(false).message(e.getMessage())
+              .errorCode(e.getMessageCode()).httpCode(HttpStatus.BAD_REQUEST.value()).build()
+          , HttpStatus.OK);
+    } catch (Exception e) {
+      logger.error(e.getMessage());
+      return new ResponseEntity<>(
+          BaseMethodResponse.builder().status(false).message(Constants.INTERNAL_SERVER_ERROR)
+              .errorCode(HttpStatus.INTERNAL_SERVER_ERROR.name().toLowerCase())
+              .httpCode(HttpStatus.INTERNAL_SERVER_ERROR.value()).build()
+          , HttpStatus.OK);
+    }
+  }
+
   @PostMapping(path = "/post-note")
   public ResponseEntity<?> postNote(HttpServletRequest request,
       @RequestBody NoteDto dto) {
@@ -110,7 +136,7 @@ public class MobileController {
     }
   }
 
-  @GetMapping(path = "/edit-note/{id}")
+  @PostMapping(path = "/edit-note/{id}")
   public ResponseEntity<?> editNote(HttpServletRequest request, @PathVariable Integer id, @RequestBody PostNoteDto dto) {
     try {
       Integer data = mobileServices.editNote(id, dto, request.getHeader("token"));
@@ -138,7 +164,7 @@ public class MobileController {
   @PostMapping(path = "/delete/{id}")
   public ResponseEntity<?> deleteNote(HttpServletRequest request, @PathVariable Integer id) {
     try {
-      List<NoteUser> data = mobileServices.deleteNote(id, request.getHeader("token"));
+      String data = mobileServices.deleteNote(id, request.getHeader("token"));
       return new ResponseEntity<>(
           GetMethodResponse.builder().status(true).data(data)
               .message(Constants.SUCCESS_MSG)

@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
@@ -89,13 +90,13 @@ public class MobileServicesImpl implements MobileServices {
 
     if(v == null){
       throw new OperationNotImplementException("user not found" +
-          AuthServiceMessageCode.USER_CREATE_FAIL);
+          AuthServiceMessageCode.USER_NOT_FOUND);
     }
     AuthUser tmp = authUserRepositories.findById(v);
 
     if(tmp == null){
       throw new OperationNotImplementException("user not found" +
-          AuthServiceMessageCode.USER_CREATE_FAIL);
+          AuthServiceMessageCode.USER_NOT_FOUND);
     }
 
     // extend token
@@ -139,8 +140,27 @@ public class MobileServicesImpl implements MobileServices {
   }
 
   @Override
-  public List<NoteUser> deleteNote(Integer id, String token) throws OperationNotImplementException {
+  public String deleteNote(Integer id, String token) throws OperationNotImplementException {
     extendRedisKey(token, getRedisKeyValue(token));
+    Optional<NoteUser> tmp =  noteRepositories.findById(id);
+    if(tmp.isEmpty()){
+      throw new OperationNotImplementException("Note does not exist" + AuthServiceMessageCode.NOTE_NOT_FOUND);
+    }
+    tmp.get().setIsDeleted(true);
+    noteRepositories.save(tmp.get());
+    return "Note deleted";
+  }
+
+  @Override
+  public SignInResponse getUserInfo(String token) throws OperationNotImplementException {
+    String v = getRedisKeyValue(token);
+    if(v == null){
+      throw new OperationNotImplementException("User not found" +
+          AuthServiceMessageCode.USER_NOT_FOUND);
+    }
+    extendRedisKey(token, v);
+
+
     return null;
   }
 
