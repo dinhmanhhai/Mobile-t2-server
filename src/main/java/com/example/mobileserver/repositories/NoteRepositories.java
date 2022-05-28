@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NoteRepositories extends JpaRepository<NoteUser, Integer> {
 
-  @Query("select a from NoteUser a where a.userId = ?1")
+  @Query("select a from NoteUser a where a.userId = ?1 and a.isDeleted = false")
   List<NoteUser> findByUserId(String userId);
 
   NoteUser findOneById(Integer id);
