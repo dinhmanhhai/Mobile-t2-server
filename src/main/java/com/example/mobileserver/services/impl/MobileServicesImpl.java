@@ -152,16 +152,15 @@ public class MobileServicesImpl implements MobileServices {
   }
 
   @Override
-  public SignInResponse getUserInfo(String token) throws OperationNotImplementException {
+  public AuthUser getUserInfo(String token) throws OperationNotImplementException {
     String v = getRedisKeyValue(token);
     if(v == null){
       throw new OperationNotImplementException("User not found" +
           AuthServiceMessageCode.USER_NOT_FOUND);
     }
     extendRedisKey(token, v);
-
-
-    return null;
+    AuthUser data = authUserRepositories.findById(v);
+    return data;
   }
 
   private AuthUser validateUser(SignInDto dto) throws OperationNotImplementException {
