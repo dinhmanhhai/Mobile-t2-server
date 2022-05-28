@@ -5,6 +5,7 @@ import com.example.mobileserver.dto.NoteDto;
 import com.example.mobileserver.dto.PostNoteDto;
 import com.example.mobileserver.dto.SignInDto;
 import com.example.mobileserver.dto.SignInResponse;
+import com.example.mobileserver.entities.AuthUser;
 import com.example.mobileserver.entities.NoteUser;
 import java.util.List;
 
@@ -19,5 +20,5 @@ public interface MobileServices {
 
   String deleteNote(Integer id, String token) throws OperationNotImplementException;
 
-  SignInResponse getUserInfo(String token) throws OperationNotImplementException;
+  AuthUser getUserInfo(String token) throws OperationNotImplementException;
 }

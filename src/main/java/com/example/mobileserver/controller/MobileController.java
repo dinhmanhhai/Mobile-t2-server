@@ -8,6 +8,7 @@ import com.example.mobileserver.dto.NoteDto;
 import com.example.mobileserver.dto.PostNoteDto;
 import com.example.mobileserver.dto.SignInDto;
 import com.example.mobileserver.dto.SignInResponse;
+import com.example.mobileserver.entities.AuthUser;
 import com.example.mobileserver.entities.NoteUser;
 import com.example.mobileserver.services.impl.MobileServicesImpl;
 import java.util.List;
@@ -60,12 +61,11 @@ public class MobileController {
   }
 
   @GetMapping(path = "/auth/user")
-  public ResponseEntity<?> getUserInfo(HttpServletRequest request,
-      @RequestBody SignInDto dto) {
+  public ResponseEntity<?> getUserInfo(HttpServletRequest request) {
     try {
-      SignInResponse signInResponse = mobileServices.getUserInfo(request.getHeader("token"));
+      AuthUser data = mobileServices.getUserInfo(request.getHeader("token"));
       return new ResponseEntity<>(
-          GetMethodResponse.builder().status(true).data(signInResponse)
+          GetMethodResponse.builder().status(true).data(data)
               .message(Constants.SUCCESS_MSG)
               .errorCode(HttpStatus.OK.name().toLowerCase()).httpCode(HttpStatus.OK.value()).build()
           , HttpStatus.OK);
